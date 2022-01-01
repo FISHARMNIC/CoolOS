@@ -1,6 +1,7 @@
 // #region ----- INIT -----
 #include "stdarg.h"
 
+
 uint16 *vgabuffer = (uint16 *)VGA_ADDRESS;
 const int indentation = 1;
 const int vIndentation = 1;
@@ -62,7 +63,7 @@ int printAt(int printLOC, char type, ...)
     }
     else if (type == 'i')
     {
-        int pInt = va_arg(ap, int);
+        int pInt = va_arg(ap, uint32);
         int div;
         int oLen = 0;
         for (div = 1; div <= pInt; div *= 10)
@@ -129,14 +130,16 @@ void printXY(int posX, int posY, char type, ...)
     }
 }
 
-void resetCharAt() {
+void resetCharAt()
+{
     charAt = indentation + 80 * vIndentation;
 }
 
 void printNewLine()
 {
     charAt = charAt + (80 - (charAt % 80));
-    if(charAt > 2000) {
+    if (charAt > 2000)
+    {
         onScreenFull();
     }
 }
@@ -147,7 +150,8 @@ void printNewFormattedLine()
     charAt += indentation;
 }
 
-void println(char type, ...) {
+void println(char type, ...)
+{
     va_list ap;
     va_start(ap, type);
 
@@ -171,9 +175,11 @@ void println(char type, ...) {
     printNewFormattedLine();
 }
 
-void fillScreen(uint8 color) {
-    for(int i =0; i < 80 * 25; i++) {
-        vgabuffer[i] = formatVGA(0,0,color);
+void fillScreen(uint8 color)
+{
+    for (int i = 0; i < 80 * 25; i++)
+    {
+        vgabuffer[i] = formatVGA(0, 0, color);
     }
 }
 // #endregion
@@ -208,7 +214,8 @@ void gfx_drawBox(int startX, int startY, int width, int height)
         charAt += startX % 80;
         printf('c', VERTICAL_LINE);
         itIndex2 = 0;
-        while(itIndex2 < width) {
+        while (itIndex2 < width)
+        {
             vgabuffer[charAt] = formatVGA(0, 0, BLACK);
             itIndex2++;
             charAt++;
@@ -265,16 +272,10 @@ int createWindow(int attachmentID, int startX, int startY, int width, int height
 // #endregion
 
 // #region ----- STDIN -----
-uint8 inb(uint16 port)
-{
-    uint8 ret;
-    asm volatile("inb %1, %0"
-                 : "=a"(ret)
-                 : "d"(port));
-    return ret;
-}
 
-int awaitKeyboard() {
+
+int awaitKeyboard()
+{
     char ch = 0;
     while ((ch = inb(KEYBOARD_PORT)) != 0)
     {
@@ -282,5 +283,21 @@ int awaitKeyboard() {
             return ch;
     }
     return ch;
+}
+
+void disableCursor()
+{
+    asm(
+        ".intel_syntax;"
+        "pusha;"
+        "mov %dx, 0x3D4;"
+        "mov %al, 0xA;"
+        "out %dx, %al;"
+        "inc %dx;"
+        "mov %al, 0x20;"
+        "out %dx, %al;"
+        "popa;"
+        ".att_syntax;"
+    );
 }
 // #endregion

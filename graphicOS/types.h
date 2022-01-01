@@ -2,6 +2,10 @@ typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef unsigned int uint32;
 
+void read_sectors_ATA_PIO(uint32 LBA, uint8 sector_count);
+void write_sectors_ATA_PIO(uint32 LBA, uint8 sector_count, uint32 *bytes);
+uint32 target[1000];
+
 #define VGA_ADDRESS 0xB8000
 enum vga_color
 {
@@ -210,3 +214,4 @@ char get_ascii_char(uint8 key_code)
         return 0;
     }
 }
+

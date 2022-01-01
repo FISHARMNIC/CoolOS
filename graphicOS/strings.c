@@ -41,3 +41,18 @@ void charArrayFill(char *array, int length, char source) {
         array[i] = source;
     }
 }
+
+void strcpy(char *destination, char *source)
+{
+    int index = 0;
+
+    while (destination[index] != '\0')
+    {
+        source[index] = destination[index];
+        index++;
+    }
+    for (index = 0; index < 10; index++)
+    {
+        source[index] = '\0';
+    }
+}

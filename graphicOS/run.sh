@@ -19,6 +19,6 @@ cp boot/grub.cfg isodir/boot/grub/grub.cfg
 grub-mkrescue -o compiled/MyOS.iso isodir
 
 #run it in qemu
-qemu-system-x86_64 -cdrom compiled/MyOS.iso
+qemu-system-x86_64 -drive file=compiled/MyOS.iso,format=raw
 
 fi

@@ -1,0 +1,3 @@
+https://gist.github.com/ldunn/226595
+https://web.archive.org/web/20160311205832/http://www.jamesmolloy.co.uk/tutorial_html/8.-The%20VFS%20and%20the%20initrd.html
+http://learnitonweb.com/2020/05/22/12-developing-an-operating-system-tutorial-episode-6-ata-pio-driver-osdev/

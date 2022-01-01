@@ -8,6 +8,7 @@ uint8 BGcolor = BLUE;
 #include "sys.c"
 #include "stdio.c"
 #include "command_line.c"
+#include "filesystem.c"
 
 char *current_directory = "ROOT";
 char typed_phrase[80];
@@ -18,10 +19,35 @@ int correspondingChar;
 
 void kernel_entry()
 {
+    disableCursor();
     onScreenFull();
     println('s', "CoolOS - Version 1.1");
     println('s', "Type \"help\" for a list of commands");
     printNewFormattedLine();
+
+    // TEST READ SECTION
+
+    // int i;
+    // i = 0;
+
+    // uint32 bwrite[512];
+    // for(i = 0; i < 512; i++)
+    // {
+    //     bwrite[i] = 0x48;
+    //     //printf('c', 'B');
+    // }
+    // write_sectors_ATA_PIO(0x0, 1, bwrite);
+
+    // read_sectors_ATA_PIO(0x0, 1);
+    // while(i < 256)
+    // {
+    //     printf('c', 14 + (target[i] & 0xFF));
+    //     printf('c', 14 + ((target[i] >> 8) & 0xFF));
+    //     i++;
+    // }
+    //END TEST READ SECTION
+
+
 
     while (TRUE)
     {
@@ -50,16 +76,16 @@ void kernel_entry()
             typed_phrase[typed_phrase_index] = (char) correspondingChar;
             typed_phrase_index++;
         }
-        sleep(67108863);
+        sleep(67000000);
     }
 }
 
 void onScreenFull()
 {
-    saveBGcolor();
+    //saveBGcolor();
     BGcolor = BLUE;
     fillScreen(BGcolor);
     window_renderWindow_uncompensated(current_directory, 0, 0, 77, 23);
     resetCharAt();
-    restoreBGcolor();
+    //restoreBGcolor();
 }
